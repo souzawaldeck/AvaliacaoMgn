@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CadastroModel4.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="endereco">
+          <Key>
+            <PropertyRef Name="id_pessoa" />
+          </Key>
+          <Property Name="id_pessoa" Type="int" Nullable="false" />
+          <Property Name="cep" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="logradouro" Type="nchar" MaxLength="40" />
+          <Property Name="numero" Type="numeric" Precision="9" Scale="0" />
+          <Property Name="bairro" Type="nchar" MaxLength="30" />
+          <Property Name="municipio" Type="nchar" MaxLength="30" />
+          <Property Name="uf" Type="nchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="pessoa">
+          <Key>
+            <PropertyRef Name="id_pessoa" />
+          </Key>
+          <Property Name="id_pessoa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="cpf" Type="numeric" Precision="11" Scale="0" />
+          <Property Name="rg" Type="numeric" Precision="14" Scale="0" />
+        </EntityType>
+        <Association Name="FK_endereco_pessoa">
+          <End Role="pessoa" Type="Self.pessoa" Multiplicity="1" />
+          <End Role="endereco" Type="Self.endereco" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="pessoa">
+              <PropertyRef Name="id_pessoa" />
+            </Principal>
+            <Dependent Role="endereco">
+              <PropertyRef Name="id_pessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CadastroModel4StoreContainer">
+          <EntitySet Name="endereco" EntityType="Self.endereco" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pessoa" EntityType="Self.pessoa" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_endereco_pessoa" Association="Self.FK_endereco_pessoa">
+            <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="endereco" EntitySet="endereco" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CadastroModel4" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="endereco">
+          <Key>
+            <PropertyRef Name="id_pessoa" />
+          </Key>
+          <Property Name="id_pessoa" Type="Int32" Nullable="false" />
+          <Property Name="cep" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="logradouro" Type="String" MaxLength="40" FixedLength="true" Unicode="true" />
+          <Property Name="numero" Type="Decimal" Precision="9" Scale="0" />
+          <Property Name="bairro" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="municipio" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="uf" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="pessoa" Relationship="Self.FK_endereco_pessoa" FromRole="endereco" ToRole="pessoa" />
+        </EntityType>
+        <EntityType Name="pessoa">
+          <Key>
+            <PropertyRef Name="id_pessoa" />
+          </Key>
+          <Property Name="id_pessoa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="cpf" Type="Decimal" Precision="11" Scale="0" />
+          <Property Name="rg" Type="Decimal" Precision="14" Scale="0" />
+          <NavigationProperty Name="endereco" Relationship="Self.FK_endereco_pessoa" FromRole="pessoa" ToRole="endereco" />
+        </EntityType>
+        <Association Name="FK_endereco_pessoa">
+          <End Role="pessoa" Type="Self.pessoa" Multiplicity="1" />
+          <End Role="endereco" Type="Self.endereco" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="pessoa">
+              <PropertyRef Name="id_pessoa" />
+            </Principal>
+            <Dependent Role="endereco">
+              <PropertyRef Name="id_pessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CadastroEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="enderecoes" EntityType="Self.endereco" />
+          <EntitySet Name="pessoas" EntityType="Self.pessoa" />
+          <AssociationSet Name="FK_endereco_pessoa" Association="Self.FK_endereco_pessoa">
+            <End Role="pessoa" EntitySet="pessoas" />
+            <End Role="endereco" EntitySet="enderecoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CadastroModel4StoreContainer" CdmEntityContainer="CadastroEntities3">
+          <EntitySetMapping Name="enderecoes">
+            <EntityTypeMapping TypeName="CadastroModel4.endereco">
+              <MappingFragment StoreEntitySet="endereco">
+                <ScalarProperty Name="id_pessoa" ColumnName="id_pessoa" />
+                <ScalarProperty Name="cep" ColumnName="cep" />
+                <ScalarProperty Name="logradouro" ColumnName="logradouro" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="bairro" ColumnName="bairro" />
+                <ScalarProperty Name="municipio" ColumnName="municipio" />
+                <ScalarProperty Name="uf" ColumnName="uf" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pessoas">
+            <EntityTypeMapping TypeName="CadastroModel4.pessoa">
+              <MappingFragment StoreEntitySet="pessoa">
+                <ScalarProperty Name="id_pessoa" ColumnName="id_pessoa" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="cpf" ColumnName="cpf" />
+                <ScalarProperty Name="rg" ColumnName="rg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
